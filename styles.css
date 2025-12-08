@@ -354,7 +354,7 @@ body {
 .item-price {
     font-size: 0.95rem;
     font-weight: 700;
-    color: var(--primary-blue-light);
+    color: #EF4444;
 }
 
 .add-btn {
@@ -470,7 +470,7 @@ body {
 .order-item-price {
     font-size: 0.95rem;
     font-weight: 700;
-    color: var(--primary-yellow);
+    color: #EF4444;
     min-width: 70px;
     text-align: right;
 }
@@ -682,7 +682,7 @@ body {
 .order-total-amount {
     font-size: 1.25rem;
     font-weight: 800;
-    color: var(--primary-blue);
+    color: #EF4444;
 }
 
 .status-actions {
@@ -915,13 +915,15 @@ body {
 }
 
 .status-badge.preparing {
-    background: var(--primary-blue-light);
-    color: white;
+    background: #FFD700;
+    color: #000000;
+    font-weight: 800;
 }
 
 .status-badge.ready {
-    background: var(--success-green);
+    background: #10b981;
     color: white;
+    font-weight: 800;
 }
 
 .status-badge.served {
@@ -1019,6 +1021,29 @@ body {
 #edit-mode-btn.active {
     background: var(--success-green);
     color: white;
+    animation: pulse 2s infinite;
+}
+
+#edit-mode-btn {
+    font-weight: 700;
+    box-shadow: var(--shadow-md);
+}
+
+#edit-mode-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+    }
+
+    50% {
+        box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+    }
 }
 
 .billing-stats {
@@ -1134,7 +1159,7 @@ body {
 .bill-card-total {
     font-size: 1.5rem;
     font-weight: 800;
-    color: var(--primary-yellow);
+    color: #EF4444;
 }
 
 .bill-card-count {
@@ -1352,7 +1377,7 @@ body {
 .bill-item-price {
     font-size: 1rem;
     font-weight: 700;
-    color: var(--primary-yellow);
+    color: #EF4444;
     min-width: 80px;
     text-align: right;
 }
@@ -1707,7 +1732,7 @@ body {
 
 .detail-item-price {
     font-weight: 700;
-    color: var(--primary-yellow);
+    color: #EF4444;
     min-width: 70px;
     text-align: right;
 }
@@ -1717,19 +1742,21 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: var(--spacing-lg);
-    background: var(--primary-yellow);
+    background: var(--gray-200);
     border-radius: var(--radius-lg);
-    color: #000000;
+    border: 2px solid #EF4444;
 }
 
 .detail-total-label {
     font-size: 1.125rem;
     font-weight: 700;
+    color: var(--gray-900);
 }
 
 .detail-total-amount {
     font-size: 1.5rem;
     font-weight: 800;
+    color: #EF4444;
 }
 
 /* View Details Button in Bill Card */

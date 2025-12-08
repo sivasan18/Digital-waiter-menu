@@ -994,19 +994,32 @@ function checkAdminPassword() {
 
 function generateDailyReport() {
     try {
-        // Get today's date
-        const today = new Date();
-        const todayStart = new Date(today.setHours(0, 0, 0, 0));
-        const todayEnd = new Date(today.setHours(23, 59, 59, 999));
+        // Show date picker
+        const selectedDate = prompt('Enter date for report (YYYY-MM-DD format):\n\nExamples:\n- Today: ' + new Date().toISOString().split('T')[0] + '\n- Yesterday: ' + new Date(Date.now() - 86400000).toISOString().split('T')[0], new Date().toISOString().split('T')[0]);
 
-        // Filter bills for today
-        const todayBills = state.ownerBills.filter(bill => {
+        if (!selectedDate) {
+            showToast('Report generation cancelled', 'error');
+            return;
+        }
+
+        // Parse selected date
+        const reportDate = new Date(selectedDate + 'T00:00:00');
+        if (isNaN(reportDate.getTime())) {
+            showToast('Invalid date format. Please use YYYY-MM-DD', 'error');
+            return;
+        }
+
+        const dayStart = new Date(reportDate.setHours(0, 0, 0, 0));
+        const dayEnd = new Date(reportDate.setHours(23, 59, 59, 999));
+
+        // Filter bills for selected date
+        const dateBills = state.ownerBills.filter(bill => {
             const billDate = new Date(bill.timestamp);
-            return billDate >= todayStart && billDate <= todayEnd;
+            return billDate >= dayStart && billDate <= dayEnd;
         });
 
-        if (todayBills.length === 0) {
-            showToast('No bills found for today', 'error');
+        if (dateBills.length === 0) {
+            showToast(`No bills found for ${selectedDate}`, 'error');
             return;
         }
 
@@ -1015,7 +1028,7 @@ function generateDailyReport() {
         const doc = new jsPDF();
 
         // Title
-        const reportDate = new Date().toLocaleDateString('en-IN', {
+        const reportDateFormatted = new Date(selectedDate).toLocaleDateString('en-IN', {
             year: 'numeric',
             month: 'long',
             day: 'numeric'
@@ -1027,14 +1040,14 @@ function generateDailyReport() {
 
         doc.setFontSize(12);
         doc.setFont('helvetica', 'normal');
-        doc.text(reportDate, 105, 23, { align: 'center' });
+        doc.text(reportDateFormatted, 105, 23, { align: 'center' });
 
         let y = 35;
         let grandTotal = 0;
 
         // Group bills by table
         const billsByTable = {};
-        todayBills.forEach(bill => {
+        dateBills.forEach(bill => {
             if (!billsByTable[bill.table]) {
                 billsByTable[bill.table] = [];
             }
@@ -1097,16 +1110,10 @@ function generateDailyReport() {
         doc.text(`Rs.${grandTotal}`, 180, y, { align: 'right' });
 
         // Save PDF
-        const filename = `Daily_Report_${new Date().toISOString().split('T')[0]}.pdf`;
+        const filename = `Daily_Report_${selectedDate}.pdf`;
         doc.save(filename);
 
-        // Show Edit Mode button after successful download
-        const editModeBtn = document.getElementById('edit-mode-btn');
-        if (editModeBtn) {
-            editModeBtn.style.display = 'inline-block';
-        }
-
-        showToast('Daily report downloaded successfully!', 'success');
+        showToast(`Report for ${selectedDate} downloaded successfully!`, 'success');
     } catch (error) {
         console.error('Error generating PDF:', error);
         showToast('Error generating PDF report', 'error');
