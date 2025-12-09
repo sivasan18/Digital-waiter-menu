@@ -2,7 +2,8 @@
     "name": "Digital Waiter Menu",
     "short_name": "Waiter Menu",
     "description": "Restaurant ordering system for waiters and kitchen staff",
-    "start_url": "/index.html",
+     "start_url": "/",
+     "scope": "/",
     "display": "standalone",
     "background_color": "#F59E0B",
     "theme_color": "#F59E0B",
@@ -54,3 +55,4 @@
         }
     ]
 }
+
